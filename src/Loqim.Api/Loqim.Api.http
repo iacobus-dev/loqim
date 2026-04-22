@@ -1,0 +1,6 @@
+@Loqim.Api_HostAddress = http://localhost:5111
+
+GET {{Loqim.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
