@@ -56,4 +56,40 @@ public class AiRulesController : ControllerBase
 
         return Ok(rules);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateAiRuleRequest request)
+    {
+        var rule = await _aiRuleRepository.GetByIdAsync(id);
+        if (rule is null)
+            return NotFound("AI rule not found.");
+
+        if (string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("Name is required.");
+
+        if (string.IsNullOrWhiteSpace(request.Content))
+            return BadRequest("Content is required.");
+
+        rule.Category = request.Category;
+        rule.Name = request.Name.Trim();
+        rule.Content = request.Content.Trim();
+        rule.Priority = request.Priority;
+        rule.IsActive = request.IsActive;
+
+        await _aiRuleRepository.UpdateAsync(rule);
+
+        return Ok(rule);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var rule = await _aiRuleRepository.GetByIdAsync(id);
+        if (rule is null)
+            return NotFound("AI rule not found.");
+
+        await _aiRuleRepository.DeactivateAsync(rule);
+
+        return NoContent();
+    }
 }

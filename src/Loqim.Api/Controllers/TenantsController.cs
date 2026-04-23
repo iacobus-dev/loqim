@@ -61,4 +61,34 @@ public class TenantsController : ControllerBase
 
         return Ok(tenants);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTenantRequest request)
+    {
+        var tenant = await _tenantRepository.GetByIdAsync(id);
+        if (tenant is null)
+            return NotFound();
+
+        if (string.IsNullOrWhiteSpace(request.Name))
+            return BadRequest("Name is required.");
+
+        if (string.IsNullOrWhiteSpace(request.Slug))
+            return BadRequest("Slug is required.");
+
+        if (string.IsNullOrWhiteSpace(request.Status))
+            return BadRequest("Status is required.");
+
+        var normalizedSlug = request.Slug.Trim().ToLower();
+        var slugExists = await _tenantRepository.SlugExistsAsync(normalizedSlug, tenant.Id);
+        if (slugExists)
+            return Conflict("Slug already exists.");
+
+        tenant.Name = request.Name.Trim();
+        tenant.Slug = normalizedSlug;
+        tenant.Status = request.Status.Trim().ToLower();
+
+        await _tenantRepository.UpdateAsync(tenant);
+
+        return Ok(tenant);
+    }
 }

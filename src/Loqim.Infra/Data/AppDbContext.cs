@@ -12,8 +12,11 @@ public class AppDbContext : DbContext
     public DbSet<Tenant> Tenants => Set<Tenant>();
     public DbSet<BusinessProfile> BusinessProfiles => Set<BusinessProfile>();
     public DbSet<AiRule> AiRules => Set<AiRule>();
+    public DbSet<LeadCaptureRule> LeadCaptureRules => Set<LeadCaptureRule>();
+    public DbSet<EscalationRule> EscalationRules => Set<EscalationRule>();
     public DbSet<CatalogProduct> CatalogProducts => Set<CatalogProduct>();
     public DbSet<CatalogServiceItem> CatalogServiceItems => Set<CatalogServiceItem>();
+    public DbSet<ConversationMessage> ConversationMessages => Set<ConversationMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -20,6 +20,12 @@ public class BusinessProfileRepository : IBusinessProfileRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task UpdateAsync(BusinessProfile profile, CancellationToken cancellationToken = default)
+    {
+        _context.BusinessProfiles.Update(profile);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
     public Task<BusinessProfile?> GetByTenantIdAsync(Guid tenantId, CancellationToken cancellationToken = default)
     {
         return _context.BusinessProfiles

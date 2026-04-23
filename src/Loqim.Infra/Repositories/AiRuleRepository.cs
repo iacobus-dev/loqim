@@ -20,6 +20,25 @@ public class AiRuleRepository : IAiRuleRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task DeactivateAsync(AiRule rule, CancellationToken cancellationToken = default)
+    {
+        rule.IsActive = false;
+        _context.AiRules.Update(rule);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public Task<AiRule?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return _context.AiRules
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public async Task UpdateAsync(AiRule rule, CancellationToken cancellationToken = default)
+    {
+        _context.AiRules.Update(rule);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<IReadOnlyList<AiRule>> GetActiveByTenantIdAsync(Guid tenantId, CancellationToken cancellationToken = default)
     {
         return await _context.AiRules

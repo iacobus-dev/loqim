@@ -7,9 +7,9 @@ namespace Loqim.Api.Controllers;
 [Route("api/[controller]")]
 public class PromptController : ControllerBase
 {
-    private readonly PromptBuilderService _promptBuilderService;
+    private readonly IPromptBuilderService _promptBuilderService;
 
-    public PromptController(PromptBuilderService promptBuilderService)
+    public PromptController(IPromptBuilderService promptBuilderService)
     {
         _promptBuilderService = promptBuilderService;
     }

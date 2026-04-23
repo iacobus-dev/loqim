@@ -20,6 +20,12 @@ public class TenantRepository : ITenantRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task UpdateAsync(Tenant tenant, CancellationToken cancellationToken = default)
+    {
+        _context.Tenants.Update(tenant);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
     public Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return _context.Tenants.AnyAsync(x => x.Id == id, cancellationToken);
@@ -38,8 +44,10 @@ public class TenantRepository : ITenantRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public Task<bool> SlugExistsAsync(string slug, CancellationToken cancellationToken = default)
+    public Task<bool> SlugExistsAsync(string slug, Guid? excludeTenantId = null, CancellationToken cancellationToken = default)
     {
-        return _context.Tenants.AnyAsync(x => x.Slug == slug, cancellationToken);
+        return _context.Tenants.AnyAsync(
+            x => x.Slug == slug && (!excludeTenantId.HasValue || x.Id != excludeTenantId.Value),
+            cancellationToken);
     }
 }

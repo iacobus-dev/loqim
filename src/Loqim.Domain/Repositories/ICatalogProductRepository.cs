@@ -5,5 +5,8 @@ namespace Loqim.Domain.Repositories;
 public interface ICatalogProductRepository
 {
     Task AddAsync(CatalogProduct product, CancellationToken cancellationToken = default);
+    Task<CatalogProduct?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<CatalogProduct>> GetActiveByTenantIdAsync(Guid tenantId, CancellationToken cancellationToken = default);
+    Task UpdateAsync(CatalogProduct product, CancellationToken cancellationToken = default);
+    Task DeleteAsync(CatalogProduct product, CancellationToken cancellationToken = default);
 }

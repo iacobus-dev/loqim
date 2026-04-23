@@ -18,10 +18,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<IBusinessProfileRepository, BusinessProfileRepository>();
 builder.Services.AddScoped<IAiRuleRepository, AiRuleRepository>();
+builder.Services.AddScoped<ILeadCaptureRuleRepository, LeadCaptureRuleRepository>();
+builder.Services.AddScoped<IEscalationRuleRepository, EscalationRuleRepository>();
 builder.Services.AddScoped<ICatalogProductRepository, CatalogProductRepository>();
 builder.Services.AddScoped<ICatalogServiceItemRepository, CatalogServiceItemRepository>();
+builder.Services.AddScoped<IConversationMessageRepository, ConversationMessageRepository>();
 
-builder.Services.AddScoped<PromptBuilderService>();
+builder.Services.AddScoped<IPromptBuilderService, PromptBuilderService>();
+builder.Services.AddScoped<IChatOrchestratorService, ChatOrchestratorService>();
+builder.Services.AddHttpClient<IOpenAiService, OpenAiService>();
 
 var app = builder.Build();
 
