@@ -1,0 +1,12 @@
+D:\Loqim\src\Loqim.Domain\bin\Debug\net8.0\Loqim.Domain.deps.json
+D:\Loqim\src\Loqim.Domain\bin\Debug\net8.0\Loqim.Domain.dll
+D:\Loqim\src\Loqim.Domain\bin\Debug\net8.0\Loqim.Domain.pdb
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.AssemblyInfoInputs.cache
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.AssemblyInfo.cs
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.csproj.CoreCompileInputs.cache
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.sourcelink.json
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.dll
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\refint\Loqim.Domain.dll
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\Loqim.Domain.pdb
+D:\Loqim\src\Loqim.Domain\obj\Debug\net8.0\ref\Loqim.Domain.dll

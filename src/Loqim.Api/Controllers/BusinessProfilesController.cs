@@ -1,8 +1,7 @@
-using Loqim.Api.Data;
 using Loqim.Api.Dtos;
-using Loqim.Api.Entities;
+using Loqim.Domain.Entities;
+using Loqim.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loqim.Api.Controllers;
 
@@ -10,22 +9,25 @@ namespace Loqim.Api.Controllers;
 [Route("api/[controller]")]
 public class BusinessProfilesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IBusinessProfileRepository _businessProfileRepository;
+    private readonly ITenantRepository _tenantRepository;
 
-    public BusinessProfilesController(AppDbContext context)
+    public BusinessProfilesController(
+        IBusinessProfileRepository businessProfileRepository,
+        ITenantRepository tenantRepository)
     {
-        _context = context;
+        _businessProfileRepository = businessProfileRepository;
+        _tenantRepository = tenantRepository;
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBusinessProfileRequest request)
     {
-        var tenant = await _context.Tenants.FirstOrDefaultAsync(x => x.Id == request.TenantId);
+        var tenant = await _tenantRepository.GetByIdAsync(request.TenantId);
         if (tenant is null)
             return NotFound("Tenant not found.");
 
-        var existingProfile = await _context.BusinessProfiles
-            .FirstOrDefaultAsync(x => x.TenantId == request.TenantId);
+        var existingProfile = await _businessProfileRepository.GetByTenantIdAsync(request.TenantId);
 
         if (existingProfile is not null)
             return Conflict("Business profile already exists for this tenant.");
@@ -41,8 +43,7 @@ public class BusinessProfilesController : ControllerBase
             CreatedAt = DateTime.UtcNow
         };
 
-        _context.BusinessProfiles.Add(profile);
-        await _context.SaveChangesAsync();
+        await _businessProfileRepository.AddAsync(profile);
 
         return Ok(profile);
     }
@@ -50,8 +51,7 @@ public class BusinessProfilesController : ControllerBase
     [HttpGet("{tenantId:guid}")]
     public async Task<IActionResult> GetByTenant(Guid tenantId)
     {
-        var profile = await _context.BusinessProfiles
-            .FirstOrDefaultAsync(x => x.TenantId == tenantId);
+        var profile = await _businessProfileRepository.GetByTenantIdAsync(tenantId);
 
         if (profile is null)
             return NotFound();

@@ -1,8 +1,7 @@
-using Loqim.Api.Data;
 using Loqim.Api.Dtos;
-using Loqim.Api.Entities;
+using Loqim.Domain.Entities;
+using Loqim.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loqim.Api.Controllers;
 
@@ -10,17 +9,21 @@ namespace Loqim.Api.Controllers;
 [Route("api/[controller]")]
 public class AiRulesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAiRuleRepository _aiRuleRepository;
+    private readonly ITenantRepository _tenantRepository;
 
-    public AiRulesController(AppDbContext context)
+    public AiRulesController(
+        IAiRuleRepository aiRuleRepository,
+        ITenantRepository tenantRepository)
     {
-        _context = context;
+        _aiRuleRepository = aiRuleRepository;
+        _tenantRepository = tenantRepository;
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateAiRuleRequest request)
     {
-        var tenant = await _context.Tenants.FirstOrDefaultAsync(x => x.Id == request.TenantId);
+        var tenant = await _tenantRepository.GetByIdAsync(request.TenantId);
         if (tenant is null)
             return NotFound("Tenant not found.");
 
@@ -33,14 +36,15 @@ public class AiRulesController : ControllerBase
         var rule = new AiRule
         {
             TenantId = request.TenantId,
+            Category = request.Category,
             Name = request.Name.Trim(),
             Content = request.Content.Trim(),
+            Priority = request.Priority,
             IsActive = true,
             CreatedAt = DateTime.UtcNow
         };
 
-        _context.AiRules.Add(rule);
-        await _context.SaveChangesAsync();
+        await _aiRuleRepository.AddAsync(rule);
 
         return Ok(rule);
     }
@@ -48,10 +52,7 @@ public class AiRulesController : ControllerBase
     [HttpGet("tenant/{tenantId:guid}")]
     public async Task<IActionResult> GetByTenant(Guid tenantId)
     {
-        var rules = await _context.AiRules
-            .Where(x => x.TenantId == tenantId && x.IsActive)
-            .OrderBy(x => x.CreatedAt)
-            .ToListAsync();
+        var rules = await _aiRuleRepository.GetActiveByTenantIdAsync(tenantId);
 
         return Ok(rules);
     }

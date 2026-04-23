@@ -1,4 +1,4 @@
-using Loqim.Api.Data;
+using Loqim.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 

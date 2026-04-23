@@ -1,8 +1,7 @@
-using Loqim.Api.Data;
 using Loqim.Api.Dtos;
-using Loqim.Api.Entities;
+using Loqim.Domain.Entities;
+using Loqim.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loqim.Api.Controllers;
 
@@ -10,11 +9,11 @@ namespace Loqim.Api.Controllers;
 [Route("api/[controller]")]
 public class TenantsController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly ITenantRepository _tenantRepository;
 
-    public TenantsController(AppDbContext context)
+    public TenantsController(ITenantRepository tenantRepository)
     {
-        _context = context;
+        _tenantRepository = tenantRepository;
     }
 
     [HttpPost]
@@ -26,20 +25,21 @@ public class TenantsController : ControllerBase
         if (string.IsNullOrWhiteSpace(request.Slug))
             return BadRequest("Slug is required.");
 
-        var slugExists = await _context.Tenants.AnyAsync(x => x.Slug == request.Slug);
+        var normalizedSlug = request.Slug.Trim().ToLower();
+
+        var slugExists = await _tenantRepository.SlugExistsAsync(normalizedSlug);
         if (slugExists)
             return Conflict("Slug already exists.");
 
         var tenant = new Tenant
         {
             Name = request.Name.Trim(),
-            Slug = request.Slug.Trim().ToLower(),
+            Slug = normalizedSlug,
             Status = "active",
             CreatedAt = DateTime.UtcNow
         };
 
-        _context.Tenants.Add(tenant);
-        await _context.SaveChangesAsync();
+        await _tenantRepository.AddAsync(tenant);
 
         return CreatedAtAction(nameof(GetById), new { id = tenant.Id }, tenant);
     }
@@ -47,7 +47,7 @@ public class TenantsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var tenant = await _context.Tenants.FirstOrDefaultAsync(x => x.Id == id);
+        var tenant = await _tenantRepository.GetByIdAsync(id);
         if (tenant is null)
             return NotFound();
 
@@ -57,9 +57,7 @@ public class TenantsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var tenants = await _context.Tenants
-            .OrderBy(x => x.CreatedAt)
-            .ToListAsync();
+        var tenants = await _tenantRepository.GetAllAsync();
 
         return Ok(tenants);
     }

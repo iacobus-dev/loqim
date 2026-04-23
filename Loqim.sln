@@ -1,4 +1,4 @@
-﻿
+﻿s
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D890999-A42B-4AFF-BD39-01DB33A147D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loqim.Api", "src\Loqim.Api\Loqim.Api.csproj", "{4E8D16B6-27CF-441E-AB64-32BA4F0B45B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loqim.Domain", "src\Loqim.Domain\Loqim.Domain.csproj", "{6CD2AA4C-FE8F-40BD-9CA0-ABAAF8F34D23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loqim.Infra", "src\Loqim.Infra\Loqim.Infra.csproj", "{1631A422-2B05-4EB5-98A7-6615A87B80EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,8 +24,18 @@ Global
 		{4E8D16B6-27CF-441E-AB64-32BA4F0B45B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E8D16B6-27CF-441E-AB64-32BA4F0B45B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E8D16B6-27CF-441E-AB64-32BA4F0B45B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD2AA4C-FE8F-40BD-9CA0-ABAAF8F34D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD2AA4C-FE8F-40BD-9CA0-ABAAF8F34D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD2AA4C-FE8F-40BD-9CA0-ABAAF8F34D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD2AA4C-FE8F-40BD-9CA0-ABAAF8F34D23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1631A422-2B05-4EB5-98A7-6615A87B80EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1631A422-2B05-4EB5-98A7-6615A87B80EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1631A422-2B05-4EB5-98A7-6615A87B80EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1631A422-2B05-4EB5-98A7-6615A87B80EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4E8D16B6-27CF-441E-AB64-32BA4F0B45B6} = {2D890999-A42B-4AFF-BD39-01DB33A147D3}
+		{6CD2AA4C-FE8F-40BD-9CA0-ABAAF8F34D23} = {2D890999-A42B-4AFF-BD39-01DB33A147D3}
+		{1631A422-2B05-4EB5-98A7-6615A87B80EF} = {2D890999-A42B-4AFF-BD39-01DB33A147D3}
 	EndGlobalSection
 EndGlobal
